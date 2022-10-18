@@ -6,11 +6,12 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Info(
  *     version="1.0",
- *     title="Kolsanovafit video api documentation"
+ *     title="Kolsanovafit marathon api documentation"
  * )
  */
 class Controller extends BaseController
