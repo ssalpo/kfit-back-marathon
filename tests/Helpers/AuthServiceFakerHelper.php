@@ -45,8 +45,8 @@ class AuthServiceFakerHelper
             config('services.kfit.urls.auth') . '/api/v1/users/me' => Http::response([
                 "data" => [
                     "id" => 1,
-                    "name" => "Ms. Burdette Gibson III",
-                    "email" => "zgreenfelder@example.net",
+                    "name" => "Ms. Burdette Gibson I",
+                    "email" => "zgreenfelder1@example.net",
                     "avatar" => null,
                     "active" => true,
                     "roles" => [

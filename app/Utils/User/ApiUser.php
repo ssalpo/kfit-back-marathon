@@ -24,8 +24,10 @@ class ApiUser
 
     public function hasRole(string $name): bool
     {
-        foreach (explode(',', $name) as $role) {
-            if (in_array($role, $this->roles)) return true;
+        foreach (explode('|', $name) as $role) {
+            if(in_array($role, $this->roles, true)) {
+                return true;
+            }
         }
 
         return false;
