@@ -36,4 +36,9 @@ class Marathon extends Model
             return 'wait';
         });
     }
+
+    public function trainers()
+    {
+        return $this->hasMany(MarathonTrainer::class);
+    }
 }

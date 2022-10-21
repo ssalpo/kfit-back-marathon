@@ -29,6 +29,8 @@ class MarathonService
             $this->tempFileService->moveFromTmpFolder(TempFile::FOLDER_MARATHON_PREVIEW, $marathon->preview);
         }
 
+        $marathon->trainers()->sync(Arr::get($data, 'trainers', []));
+
         return $marathon;
     }
 
@@ -48,6 +50,8 @@ class MarathonService
         $isPreviewChanged = $marathon->preview !== Arr::get($data, 'preview');
 
         $marathon->update($data);
+
+        $marathon->trainers()->sync(Arr::get($data, 'trainers', []));
 
         if ($isPreviewChanged) {
             $this->tempFileService->moveFromTmpFolder(TempFile::FOLDER_MARATHON_PREVIEW, $marathon->preview);

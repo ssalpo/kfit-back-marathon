@@ -2,10 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Course;
-use App\Models\Workout;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use App\Models\Macros\HasManySync;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,10 +25,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        new HasManySync();
+
         Http::macro('withAuth', function () {
             return Http::baseUrl(config('services.kfit.urls.auth'))
                 ->acceptJson()
-                ->withToken(\request()->bearerToken());
+                ->withToken(\request()?->bearerToken());
         });
     }
 }
