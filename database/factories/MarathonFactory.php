@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Marathon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,22 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class MarathonFactory extends Factory
 {
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(static function (Marathon $marathon) {
+            $marathon->trainers()->sync([
+                ['trainer_id' => 1],
+                ['trainer_id' => 2],
+                ['trainer_id' => 3],
+            ]);
+        });
+    }
+
     /**
      * Define the model's default state.
      *

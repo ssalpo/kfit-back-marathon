@@ -28,7 +28,9 @@ class MarathonRequest extends FormRequest
             'start' => 'required|min:3|max:255|date_format:Y-m-d H:i:s',
             'end' => 'required|min:3|max:255|date_format:Y-m-d H:i:s',
             'preview' => 'nullable|min:3|max:255',
-            'description' => 'nullable'
+            'description' => 'nullable',
+            'trainers' => 'nullable|array',
+            'trainers.*' => 'integer',
         ];
     }
 }

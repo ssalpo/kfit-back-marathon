@@ -14,7 +14,7 @@ class MarathonTest extends TestCase
     use RefreshDatabase;
 
     public const RESOURCE_STRUCTURE = [
-        'id', 'title', 'description', 'preview', 'start', 'end', 'status'
+        'id', 'title', 'description', 'preview', 'start', 'end', 'status', 'trainers'
     ];
 
     /**
@@ -49,6 +49,7 @@ class MarathonTest extends TestCase
             'description' => 'With some description',
             'start' => '2022-10-31 12:00:00',
             'end' => '2022-11-10 12:00:00',
+            'trainers' => [1, 2, 3]
         ];
 
         $response = $this->postJson('/api/v1/marathons', $form);
@@ -91,6 +92,7 @@ class MarathonTest extends TestCase
             'description' => 'Some changed description',
             'start' => '2022-10-28 12:00:00',
             'end' => '2022-11-08 12:00:00',
+            'trainers' => [3, 4, 5]
         ];
 
         $response = $this->putJson('/api/v1/marathons/' . $record->id, $form);
@@ -116,7 +118,7 @@ class MarathonTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonStructure([
-                'data' => self::RESOURCE_STRUCTURE
+                'data' => array_diff(self::RESOURCE_STRUCTURE, ['trainers'])
             ]);
     }
 

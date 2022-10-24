@@ -29,7 +29,13 @@ class MarathonService
             $this->tempFileService->moveFromTmpFolder(TempFile::FOLDER_MARATHON_PREVIEW, $marathon->preview);
         }
 
-        $marathon->trainers()->sync(Arr::get($data, 'trainers', []));
+        if($trainers = Arr::get($data, 'trainers', [])) {
+            $marathon->trainers()->sync(
+                array_map(static fn($trainer) => ['trainer_id' => $trainer], $trainers, )
+            );
+        }
+
+        $marathon->load('trainers');
 
         return $marathon;
     }
@@ -43,7 +49,7 @@ class MarathonService
      */
     public function update(int $id, array $data): Marathon
     {
-        $marathon = Marathon::findOrFail($id);
+        $marathon = Marathon::with('trainers')->findOrFail($id);
 
         $oldPreview = $marathon->preview;
 
@@ -51,7 +57,11 @@ class MarathonService
 
         $marathon->update($data);
 
-        $marathon->trainers()->sync(Arr::get($data, 'trainers', []));
+        if($trainers = Arr::get($data, 'trainers', [])) {
+            $marathon->trainers()->sync(
+                array_map(static fn($trainer) => ['trainer_id' => $trainer], $trainers, )
+            );
+        }
 
         if ($isPreviewChanged) {
             $this->tempFileService->moveFromTmpFolder(TempFile::FOLDER_MARATHON_PREVIEW, $marathon->preview);
