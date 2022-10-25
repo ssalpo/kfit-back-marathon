@@ -14,7 +14,9 @@ class MarathonTest extends TestCase
     use RefreshDatabase;
 
     public const RESOURCE_STRUCTURE = [
-        'id', 'title', 'description', 'preview', 'start', 'end', 'status', 'trainers'
+        'id', 'title', 'description',
+        'preview', 'start', 'end',
+        'status', 'trainers', 'broadcast'
     ];
 
     /**

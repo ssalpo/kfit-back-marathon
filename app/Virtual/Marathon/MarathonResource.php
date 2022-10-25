@@ -79,4 +79,28 @@ class MarathonResource
      * @var string
      */
     private $status;
+
+    /**
+     * @OA\Property(
+     *     title="trainers",
+     *     description="List of trainers id",
+     *     @OA\Schema(
+     *       type="array",
+     *       @OA\Items(type="integer")
+     *     )
+     * )
+     *
+     * @var string
+     */
+    private $trainers;
+
+    /**
+     * @OA\Property(
+     *     title="broadcast",
+     *     @OA\Items(ref="#/components/schemas/BroadcastResource")
+     * )
+     *
+     * @var array
+     */
+    private $broadcast;
 }

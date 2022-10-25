@@ -44,6 +44,6 @@ class Marathon extends Model
 
     public function broadcast()
     {
-        return $this->hasOne(Broadcast::class);
+        return $this->belongsTo(Broadcast::class);
     }
 }

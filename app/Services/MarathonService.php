@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Constants\TempFile;
+use App\Models\Broadcast;
 use App\Models\Marathon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class MarathonService
 {
@@ -23,21 +25,25 @@ class MarathonService
      */
     public function store(array $data): Marathon
     {
-        $marathon = Marathon::create($data);
+        return DB::transaction(function () use ($data) {
+            $marathon = Marathon::create($data);
 
-        if ($marathon->preview) {
-            $this->tempFileService->moveFromTmpFolder(TempFile::FOLDER_MARATHON_PREVIEW, $marathon->preview);
-        }
+            if ($marathon->preview) {
+                $this->tempFileService->moveFromTmpFolder(TempFile::FOLDER_MARATHON_PREVIEW, $marathon->preview);
+            }
 
-        if($trainers = Arr::get($data, 'trainers', [])) {
-            $marathon->trainers()->sync(
-                array_map(static fn($trainer) => ['trainer_id' => $trainer], $trainers, )
-            );
-        }
+            if ($trainers = Arr::get($data, 'trainers', [])) {
+                $marathon->trainers()->sync(
+                    array_map(static fn($trainer) => ['trainer_id' => $trainer], $trainers,)
+                );
+            }
 
-        $marathon->load('trainers');
+            $marathon->broadcast()->associate(Broadcast::create());
 
-        return $marathon;
+            $marathon->load('trainers', 'broadcast');
+
+            return $marathon;
+        });
     }
 
     /**
@@ -57,9 +63,9 @@ class MarathonService
 
         $marathon->update($data);
 
-        if($trainers = Arr::get($data, 'trainers', [])) {
+        if ($trainers = Arr::get($data, 'trainers', [])) {
             $marathon->trainers()->sync(
-                array_map(static fn($trainer) => ['trainer_id' => $trainer], $trainers, )
+                array_map(static fn($trainer) => ['trainer_id' => $trainer], $trainers,)
             );
         }
 

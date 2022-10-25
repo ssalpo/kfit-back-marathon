@@ -17,7 +17,7 @@ class BroadcastResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'marathon' => $this->whenLoaded('marathon', $this->marathon)
+            'marathon' => $this->whenLoaded('marathon', MarathonResource::make($this->marathon))
         ];
     }
 }

@@ -70,4 +70,18 @@ class MarathonRequest
      * @var string
      */
     private $status;
+
+    /**
+     * @OA\Property(
+     *     title="trainers",
+     *     description="List of trainers id",
+     *     @OA\Schema(
+     *       type="array",
+     *       @OA\Items(type="integer")
+     *     )
+     * )
+     *
+     * @var string
+     */
+    private $trainers;
 }

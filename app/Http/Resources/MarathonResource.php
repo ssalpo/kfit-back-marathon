@@ -22,7 +22,8 @@ class MarathonResource extends JsonResource
             'start' => $this->when($this->start, $this->start->format('Y-m-d H:i:s')),
             'end' => $this->when($this->end, $this->end->format('Y-m-d H:i:s')),
             'status' => $this->status,
-            'trainers' => $this->whenLoaded('trainers', fn() => $this->trainers->pluck('trainer_id')),
+            'trainers' => $this->whenLoaded('trainers', $this->trainers->pluck('trainer_id')),
+            'broadcast' => $this->whenLoaded('broadcast', BroadcastResource::make($this->broadcast))
         ];
     }
 }
