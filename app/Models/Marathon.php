@@ -41,4 +41,9 @@ class Marathon extends Model
     {
         return $this->hasMany(MarathonTrainer::class);
     }
+
+    public function broadcast()
+    {
+        return $this->hasOne(Broadcast::class);
+    }
 }
