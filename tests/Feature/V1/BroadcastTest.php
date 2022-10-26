@@ -37,80 +37,80 @@ class BroadcastTest extends TestCase
             ]);
     }
 
-    /**
-     * @return void
-     */
-    public function test_admin_can_add_new_broadcast()
-    {
-        AuthServiceFakerHelper::actAsAdmin();
-
-        $form = [
-            'title' => 'My First Broadcast'
-        ];
-
-        $response = $this->postJson('/api/v1/broadcasts', $form);
-
-        $response->assertStatus(201)
-            ->assertJson(['data' => $form])
-            ->assertJsonStructure([
-                'data' => self::RESOURCE_STRUCTURE
-            ]);
-    }
-
-    /**
-     * @return void
-     */
-    public function test_admin_can_see_broadcast_info_by_id()
-    {
-        AuthServiceFakerHelper::actAsAdmin();
-
-        $record = BroadcastHelper::getOneRandom();
-
-        $response = $this->getJson('/api/v1/broadcasts/' . $record->id);
-
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'data' => self::RESOURCE_STRUCTURE
-            ]);
-    }
-
-    /**
-     * @return void
-     */
-    public function test_admin_can_edit_broadcast_by_id()
-    {
-        AuthServiceFakerHelper::actAsAdmin();
-
-        $record = BroadcastHelper::getOneRandom();
-
-        $form = [
-            'title' => 'My Updated Broadcast'
-        ];
-
-        $response = $this->putJson('/api/v1/broadcasts/' . $record->id, $form);
-
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'data' => self::RESOURCE_STRUCTURE
-            ])
-            ->assertJsonPath('data.title', $form['title'])
-            ->assertJsonPath('data.id', $record->id);
-    }
-
-    /**
-     * @return void
-     */
-    public function test_admin_can_delete_broadcast_by_id()
-    {
-        AuthServiceFakerHelper::actAsAdmin();
-
-        $record = BroadcastHelper::getOneRandom();
-
-        $response = $this->deleteJson('/api/v1/broadcasts/' . $record->id);
-
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'data' => self::RESOURCE_STRUCTURE
-            ]);
-    }
+//    /**
+//     * @return void
+//     */
+//    public function test_admin_can_add_new_broadcast()
+//    {
+//        AuthServiceFakerHelper::actAsAdmin();
+//
+//        $form = [
+//            'title' => 'My First Broadcast'
+//        ];
+//
+//        $response = $this->postJson('/api/v1/broadcasts', $form);
+//
+//        $response->assertStatus(201)
+//            ->assertJson(['data' => $form])
+//            ->assertJsonStructure([
+//                'data' => self::RESOURCE_STRUCTURE
+//            ]);
+//    }
+//
+//    /**
+//     * @return void
+//     */
+//    public function test_admin_can_see_broadcast_info_by_id()
+//    {
+//        AuthServiceFakerHelper::actAsAdmin();
+//
+//        $record = BroadcastHelper::getOneRandom();
+//
+//        $response = $this->getJson('/api/v1/broadcasts/' . $record->id);
+//
+//        $response->assertStatus(200)
+//            ->assertJsonStructure([
+//                'data' => self::RESOURCE_STRUCTURE
+//            ]);
+//    }
+//
+//    /**
+//     * @return void
+//     */
+//    public function test_admin_can_edit_broadcast_by_id()
+//    {
+//        AuthServiceFakerHelper::actAsAdmin();
+//
+//        $record = BroadcastHelper::getOneRandom();
+//
+//        $form = [
+//            'title' => 'My Updated Broadcast'
+//        ];
+//
+//        $response = $this->putJson('/api/v1/broadcasts/' . $record->id, $form);
+//
+//        $response->assertStatus(200)
+//            ->assertJsonStructure([
+//                'data' => self::RESOURCE_STRUCTURE
+//            ])
+//            ->assertJsonPath('data.title', $form['title'])
+//            ->assertJsonPath('data.id', $record->id);
+//    }
+//
+//    /**
+//     * @return void
+//     */
+//    public function test_admin_can_delete_broadcast_by_id()
+//    {
+//        AuthServiceFakerHelper::actAsAdmin();
+//
+//        $record = BroadcastHelper::getOneRandom();
+//
+//        $response = $this->deleteJson('/api/v1/broadcasts/' . $record->id);
+//
+//        $response->assertStatus(200)
+//            ->assertJsonStructure([
+//                'data' => self::RESOURCE_STRUCTURE
+//            ]);
+//    }
 }

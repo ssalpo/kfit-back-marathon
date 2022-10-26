@@ -4,8 +4,10 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BroadcastResource extends JsonResource
+class MarathonComponentResource extends JsonResource
 {
+    public static $wrap = null;
+
     /**
      * Transform the resource into an array.
      *
@@ -15,9 +17,7 @@ class BroadcastResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'marathon' => MarathonResource::make($this->whenLoaded('marathon'))
+            'broadcast' => $this->whenLoaded('broadcast', BroadcastResource::make($this->broadcast))
         ];
     }
 }

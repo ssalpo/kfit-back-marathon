@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('marathons', function (Blueprint $table) {
+        Schema::create('marathon_components', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->text('preview')->nullable();
-            $table->timestamp('start')->nullable();
-            $table->timestamp('end')->nullable();
+            $table->foreignId('marathon_id')->constrained()->onDelete('cascade');
+            $table->string('model_type');
+            $table->unsignedBigInteger('model_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('marathons');
+        Schema::dropIfExists('marathon_components');
     }
 };

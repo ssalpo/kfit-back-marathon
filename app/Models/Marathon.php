@@ -17,11 +17,6 @@ class Marathon extends Model
         'end' => 'datetime',
     ];
 
-    public function marathonable()
-    {
-        return $this->morphTo();
-    }
-
     public function status(): Attribute
     {
         return Attribute::get(function ($value, $attributes) {
@@ -42,8 +37,20 @@ class Marathon extends Model
         return $this->hasMany(MarathonTrainer::class);
     }
 
+    public function components()
+    {
+        return $this->hasMany(MarathonComponent::class);
+    }
+
     public function broadcast()
     {
-        return $this->belongsTo(Broadcast::class);
+        return $this->hasOneThrough(
+            Broadcast::class,
+            MarathonComponent::class,
+            'marathon_id',
+            'id',
+            'id',
+            'model_id'
+        );
     }
 }

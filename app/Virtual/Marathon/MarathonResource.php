@@ -96,11 +96,11 @@ class MarathonResource
 
     /**
      * @OA\Property(
-     *     title="broadcast",
-     *     @OA\Items(ref="#/components/schemas/BroadcastResource")
+     *     title="components",
+     *     @OA\Items(ref="#/components/schemas/MarathonComponentResource")
      * )
      *
      * @var array
      */
-    private $broadcast;
+    private $components;
 }

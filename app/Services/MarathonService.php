@@ -5,16 +5,17 @@ namespace App\Services;
 use App\Constants\TempFile;
 use App\Models\Broadcast;
 use App\Models\Marathon;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class MarathonService
 {
-    private TempFileService $tempFileService;
-
-    public function __construct(TempFileService $tempFileService)
+    public function __construct(
+        private TempFileService $tempFileService,
+        private MarathonComponentService $marathonComponentService
+    )
     {
-        $this->tempFileService = $tempFileService;
     }
 
     /**
@@ -38,9 +39,14 @@ class MarathonService
                 );
             }
 
-            $marathon->broadcast()->associate(Broadcast::create());
+            $broadcast = Broadcast::create();
 
-            $marathon->load('trainers', 'broadcast');
+            $this->marathonComponentService->addBroadcast(
+                $marathon->id,
+                $broadcast->id
+            );
+
+            $marathon->load('trainers', 'components');
 
             return $marathon;
         });
@@ -55,7 +61,7 @@ class MarathonService
      */
     public function update(int $id, array $data): Marathon
     {
-        $marathon = Marathon::with('trainers')->findOrFail($id);
+        $marathon = Marathon::with('trainers', 'components')->findOrFail($id);
 
         $oldPreview = $marathon->preview;
 

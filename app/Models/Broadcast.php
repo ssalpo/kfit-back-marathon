@@ -14,6 +14,13 @@ class Broadcast extends Model
 
     public function marathon()
     {
-        return $this->morphOne(Marathon::class, 'marathonable');
+        return $this->hasOneThrough(
+            Marathon::class,
+            MarathonComponent::class,
+            'model_id',
+            'id',
+            'id',
+            'marathon_id'
+        );
     }
 }

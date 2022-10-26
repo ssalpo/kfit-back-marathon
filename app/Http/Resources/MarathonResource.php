@@ -9,7 +9,7 @@ class MarathonResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
@@ -22,8 +22,8 @@ class MarathonResource extends JsonResource
             'start' => $this->when($this->start, $this->start->format('Y-m-d H:i:s')),
             'end' => $this->when($this->end, $this->end->format('Y-m-d H:i:s')),
             'status' => $this->status,
-            'trainers' => $this->whenLoaded('trainers', $this->trainers->pluck('trainer_id')),
-            'broadcast' => $this->whenLoaded('broadcast', BroadcastResource::make($this->broadcast))
+            'trainers' => $this->whenLoaded('trainers', fn() => $this->trainers->pluck('trainer_id')),
+            'components' => MarathonComponentResource::collection($this->whenLoaded('components'))
         ];
     }
 }
