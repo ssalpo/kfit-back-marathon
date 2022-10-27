@@ -42,7 +42,7 @@ class MarathonController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return MarathonResource::collection(
-            Marathon::with('trainers', 'components')->paginate()
+            Marathon::with('trainers', 'broadcast')->paginate()
         );
     }
 
@@ -103,7 +103,7 @@ class MarathonController extends Controller
      */
     public function show(Marathon $marathon): MarathonResource
     {
-        $marathon->load('trainers', 'components');
+        $marathon->load('trainers', 'broadcast');
 
         return new MarathonResource($marathon);
     }

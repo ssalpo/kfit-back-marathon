@@ -46,7 +46,7 @@ class MarathonService
                 $broadcast->id
             );
 
-            $marathon->load('trainers', 'components');
+            $marathon->load('trainers', 'broadcast');
 
             return $marathon;
         });

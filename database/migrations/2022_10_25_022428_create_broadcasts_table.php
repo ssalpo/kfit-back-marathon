@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('broadcasts', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
+            $table->tinyInteger('source_type')->nullable();
+            $table->json('source_data')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

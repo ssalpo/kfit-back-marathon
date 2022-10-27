@@ -16,7 +16,7 @@ class MarathonTest extends TestCase
     public const RESOURCE_STRUCTURE = [
         'id', 'title', 'description',
         'preview', 'start', 'end',
-        'status', 'trainers', 'components'
+        'status', 'trainers', 'broadcast'
     ];
 
     /**
@@ -101,7 +101,7 @@ class MarathonTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonStructure([
-                'data' => self::RESOURCE_STRUCTURE
+                'data' => array_diff(self::RESOURCE_STRUCTURE, ['broadcast'])
             ])
             ->assertJsonPath('data.title', $form['title'])
             ->assertJsonPath('data.id', $record->id);
@@ -120,7 +120,7 @@ class MarathonTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonStructure([
-                'data' => array_diff(self::RESOURCE_STRUCTURE, ['trainers', 'components'])
+                'data' => array_diff(self::RESOURCE_STRUCTURE, ['trainers', 'broadcast'])
             ]);
     }
 

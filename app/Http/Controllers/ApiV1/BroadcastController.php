@@ -4,8 +4,11 @@ namespace App\Http\Controllers\ApiV1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BroadcastRequest;
+use App\Http\Requests\LiveStreamRequest;
 use App\Http\Resources\BroadcastResource;
 use App\Models\Broadcast;
+use App\Services\BroadcastService;
+use App\Services\External\Broadcasts\BroadcastFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use OpenApi\Annotations as OA;
@@ -168,5 +171,42 @@ class BroadcastController extends Controller
         $broadcast->delete();
 
         return BroadcastResource::make($broadcast);
+    }
+
+    /**
+     * Create new live stream
+     *
+     * @OA\Put(
+     *     path="/broadcasts/{broadcast}/live",
+     *     tags={"Broadcasts"},
+     *     summary="Create new live stream",
+     *     @OA\Parameter(
+     *         in="path",
+     *         name="broadcast",
+     *         description="broadcast model id",
+     *         required=true,
+     *         @OA\Schema(type="int"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(ref="#/components/schemas/BroadcastResource")
+     *     ),
+     *     @OA\Response(
+     *         response=419,
+     *         description="Validation error"
+     *     )
+     * )
+     *
+     * @param LiveStreamRequest $request
+     * @param int $id
+     * @return BroadcastResource
+     * @throws \Exception
+     */
+    public function createLive(LiveStreamRequest $request, int $id): BroadcastResource
+    {
+        return BroadcastResource::make(
+            (new BroadcastService)->createLive($id, $request->source)
+        );
     }
 }

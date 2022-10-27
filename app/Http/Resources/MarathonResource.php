@@ -23,7 +23,7 @@ class MarathonResource extends JsonResource
             'end' => $this->when($this->end, $this->end->format('Y-m-d H:i:s')),
             'status' => $this->status,
             'trainers' => $this->whenLoaded('trainers', fn() => $this->trainers->pluck('trainer_id')),
-            'components' => MarathonComponentResource::collection($this->whenLoaded('components'))
+            'broadcast' => BroadcastResource::make($this->whenLoaded('broadcast'))
         ];
     }
 }

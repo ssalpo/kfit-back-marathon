@@ -10,6 +10,7 @@ Route::middleware('check.token')->group(function () {
     Route::apiResource('marathons', MarathonController::class);
 
     // Broadcast routes
+    Route::post('/broadcasts/{broadcast}/live', [BroadcastController::class, 'createLive']);
     Route::apiResource('broadcasts', BroadcastController::class);
 
     // File routes

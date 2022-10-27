@@ -37,4 +37,9 @@ return [
         ]
     ],
 
+    'kinescope' => [
+        'token' => env('KINESCOPE_TOKEN'),
+        'save_stream_folder_id' => env('KINESCOPE_SAVE_STREAM_FOLDER_ID'),
+        'url' => env('KINESCOPE_URL', 'https://api.kinescope.io/v1')
+    ]
 ];

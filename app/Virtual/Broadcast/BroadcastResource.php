@@ -31,11 +31,21 @@ class BroadcastResource
 
     /**
      * @OA\Property(
+     *     title="status"
+     * )
+     *
+     * @var string
+     */
+    private $status;
+
+    /**
+     * @OA\Property(
      *     title="marathon",
+     *     nullable=true,
      *     @OA\Items(ref="#/components/schemas/MarathonResource")
      * )
      *
-     * @var array
+     * @var object
      */
     private $marathon;
 }
