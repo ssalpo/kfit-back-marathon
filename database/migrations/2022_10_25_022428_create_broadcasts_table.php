@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('marathons', function (Blueprint $table) {
+        Schema::create('broadcasts', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->text('preview')->nullable();
-            $table->timestamp('start')->nullable();
-            $table->timestamp('end')->nullable();
+            $table->string('title')->nullable();
+            $table->tinyInteger('source_type')->nullable();
+            $table->json('source_data')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('marathons');
+        Schema::dropIfExists('broadcasts');
     }
 };

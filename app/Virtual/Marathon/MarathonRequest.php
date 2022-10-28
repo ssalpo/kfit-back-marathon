@@ -6,20 +6,11 @@ use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(
- *     title="Marathon resource"
+ *     title="Marathon request"
  * )
  */
-class MarathonResource
+class MarathonRequest
 {
-    /**
-     * @OA\Property(
-     *     title="id"
-     * )
-     *
-     * @var int
-     */
-    private $id;
-
     /**
      * @OA\Property(
      *     title="title",
@@ -93,14 +84,4 @@ class MarathonResource
      * @var string
      */
     private $trainers;
-
-    /**
-     * @OA\Property(
-     *     title="components",
-     *     @OA\Items(ref="#/components/schemas/MarathonComponentResource")
-     * )
-     *
-     * @var array
-     */
-    private $components;
 }

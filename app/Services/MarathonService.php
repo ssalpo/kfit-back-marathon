@@ -3,16 +3,19 @@
 namespace App\Services;
 
 use App\Constants\TempFile;
+use App\Models\Broadcast;
 use App\Models\Marathon;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class MarathonService
 {
-    private TempFileService $tempFileService;
-
-    public function __construct(TempFileService $tempFileService)
+    public function __construct(
+        private TempFileService $tempFileService,
+        private MarathonComponentService $marathonComponentService
+    )
     {
-        $this->tempFileService = $tempFileService;
     }
 
     /**
@@ -23,21 +26,30 @@ class MarathonService
      */
     public function store(array $data): Marathon
     {
-        $marathon = Marathon::create($data);
+        return DB::transaction(function () use ($data) {
+            $marathon = Marathon::create($data);
 
-        if ($marathon->preview) {
-            $this->tempFileService->moveFromTmpFolder(TempFile::FOLDER_MARATHON_PREVIEW, $marathon->preview);
-        }
+            if ($marathon->preview) {
+                $this->tempFileService->moveFromTmpFolder(TempFile::FOLDER_MARATHON_PREVIEW, $marathon->preview);
+            }
 
-        if($trainers = Arr::get($data, 'trainers', [])) {
-            $marathon->trainers()->sync(
-                array_map(static fn($trainer) => ['trainer_id' => $trainer], $trainers, )
+            if ($trainers = Arr::get($data, 'trainers', [])) {
+                $marathon->trainers()->sync(
+                    array_map(static fn($trainer) => ['trainer_id' => $trainer], $trainers,)
+                );
+            }
+
+            $broadcast = Broadcast::create();
+
+            $this->marathonComponentService->addBroadcast(
+                $marathon->id,
+                $broadcast->id
             );
-        }
 
-        $marathon->load('trainers');
+            $marathon->load('trainers', 'broadcast');
 
-        return $marathon;
+            return $marathon;
+        });
     }
 
     /**
@@ -49,7 +61,7 @@ class MarathonService
      */
     public function update(int $id, array $data): Marathon
     {
-        $marathon = Marathon::with('trainers')->findOrFail($id);
+        $marathon = Marathon::with('trainers', 'components')->findOrFail($id);
 
         $oldPreview = $marathon->preview;
 
@@ -57,9 +69,9 @@ class MarathonService
 
         $marathon->update($data);
 
-        if($trainers = Arr::get($data, 'trainers', [])) {
+        if ($trainers = Arr::get($data, 'trainers', [])) {
             $marathon->trainers()->sync(
-                array_map(static fn($trainer) => ['trainer_id' => $trainer], $trainers, )
+                array_map(static fn($trainer) => ['trainer_id' => $trainer], $trainers,)
             );
         }
 
